@@ -10,6 +10,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 // 加载全局样式文件
 import './styles/index.less'
+// import axios from 'axios'
 
 // 全局注册 element组件库
 Vue.use(ElementUI)
