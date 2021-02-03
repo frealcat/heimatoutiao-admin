@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+// import { ElementTiptapPlugin } from 'element-tiptap'
 
 // 加载element组件库
 import ElementUI from 'element-ui'
@@ -14,6 +15,12 @@ import './styles/index.less'
 
 // 全局注册 element组件库
 Vue.use(ElementUI)
+
+// 安装 element-tiptap 插件
+// Vue.use(ElementTiptapPlugin, {
+//   lang: 'zh',
+//   spellcheck: true
+// })
 
 Vue.config.productionTip = false
 
