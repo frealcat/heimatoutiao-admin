@@ -65,3 +65,17 @@ export const getArticle = articleId => {
     url: `/mp/v1_0/articles/${articleId}`
   })
 }
+
+// 修改文章评论状态
+export const updateCommentStatus = (articleId, allowComment) => {
+  return request({
+    method: 'GET',
+    url: '/mp/v1_0/comments/status',
+    params: {
+      articleId
+    },
+    data: {
+      allow_comment: allowComment
+    }
+  })
+}
