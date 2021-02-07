@@ -123,7 +123,7 @@ export default {
         Authorization: `Bearer ${user.token}`
       },
       totalCount: 0, // 总数据条数
-      pageSize: 12, // 每页数据条数
+      pageSize: 18, // 每页数据条数
       page: 1 // 当前页码
     }
   },

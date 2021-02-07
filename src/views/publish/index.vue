@@ -34,6 +34,21 @@
             <el-radio :label="0">无图</el-radio>
             <el-radio :label="-1">自动</el-radio>
           </el-radio-group>
+          <!--
+            我们需要把选择的封面图片的地址放到article.cover.image 数组中
+
+            当你给事件处理函数传递了自定义参数以后，就无法得到原本的那个数据参数了
+
+            如果想要在事件处理函数自定义参数以后还想得到原来事件本身的参数，则手动指定$event
+           -->
+          <template v-if="article.cover.type > 0">
+            <upload-cover
+            v-for="(cover, index) in article.cover.type"
+            :key="index"
+            :cover-image='article.cover.images[index]'
+            @update-cover="onUpdateCover(index, $event)"
+            />
+          </template>
         </el-form-item>
         <el-form-item label="频道" prop="channel_id">
           <el-select v-model="article.channel_id" placeholder="请选择频道">
@@ -56,6 +71,7 @@
 </template>
 
 <script>
+import UploadCover from './components/upload-cover'
 import {
   getArticleChannels,
   addArticle,
@@ -86,7 +102,8 @@ import { uploadImage } from '@/api/img/'
 export default {
   name: 'PublishInde',
   components: {
-    'el-tiptap': ElementTiptap
+    'el-tiptap': ElementTiptap,
+    UploadCover
   },
   props: {},
   data () {
@@ -214,6 +231,10 @@ export default {
       getArticle(this.$route.query.id).then(res => {
         this.article = res.data.data
       })
+    },
+
+    onUpdateCover (index, url) {
+      this.article.cover.images[index] = url
     }
   }
 }
