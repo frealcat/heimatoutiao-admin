@@ -41,13 +41,28 @@
 
             如果想要在事件处理函数自定义参数以后还想得到原来事件本身的参数，则手动指定$event
            -->
+           <!--
+             当你给子组件提供的数据既要使用还要修改
+              v-model="article.cover.images[index]"
+              相当于下面两个语句简写，给子组件传递了一个名字叫value的数据
+              :value="article.cover.images[index]"
+              默认监听 input事件
+              @input="article.cover.images[index]"
+
+            注意：v-model 仅仅是简写了而已，本质还是父子组件通信
+            -->
           <template v-if="article.cover.type > 0">
             <upload-cover
+            v-for="(cover, index) in article.cover.type"
+            :key="cover"
+            v-model="article.cover.images[index]"
+            />
+            <!-- <upload-cover
             v-for="(cover, index) in article.cover.type"
             :key="index"
             :cover-image='article.cover.images[index]'
             @update-cover="onUpdateCover(index, $event)"
-            />
+            /> -->
           </template>
         </el-form-item>
         <el-form-item label="频道" prop="channel_id">

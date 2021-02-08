@@ -4,7 +4,7 @@
       <img
         class="cover-img"
         ref="cover-image"
-        :src='coverImage'
+        :src='value'
       >
     </div>
     <el-dialog
@@ -14,7 +14,18 @@
     >
       <el-tabs v-model="activeName" type="card">
         <el-tab-pane label="素材库" name="first">
-          素材库的内容</el-tab-pane>
+          <!--
+            ref 有连个两个作用：
+              1.作用到普通HTML 标签上可以获取 DOM
+              2.作用到组件上可以获取组件
+           -->
+          <image-list
+          :is-show-add="false"
+          :is-show-action="false"
+          :is-show-selected="true"
+          ref="image-list"
+          />
+        </el-tab-pane>
         <el-tab-pane label="上传图片" name="second">
           <input ref="file"
           type="file"
@@ -35,11 +46,14 @@
 
 <script>
 import { uploadImage } from '@/api/img'
+import ImageList from '@/views/image/components/image-list'
 
 export default {
   name: 'UploadCover',
-  components: {},
-  props: ['cover-image'],
+  components: {
+    ImageList
+  },
+  props: ['value'],
   data () {
     return {
       dialogVisible: false,
@@ -80,15 +94,28 @@ export default {
           // 关闭弹出层
           this.dialogVisible = false
           // 展示上传图片
-          this.$refs['cover-image'].src = res.data.data.url
+          // this.$refs['cover-image'].src = res.data.data.url
           // 将图片地址发送给父组件
-          this.$emit('update-cover', res.data.data.url)
+          // this.$emit('update-cover', res.data.data.url)
+          this.$emit('input', res.data.data.url)
           this.$message({
             type: 'success',
             message: '图片上传成功',
             duration: 1500
           })
         })
+      } else if (this.activeName === 'first') {
+        // 还有一种组件通过方式，父组件可以直接访问子组件的数据
+        const imageList = this.$refs['image-list']
+        const selected = imageList.selected
+        if (selected === null) {
+          this.$message('请选择封面')
+          return () => {}
+        }
+        // 关闭对话框
+        this.dialogVisible = false
+        // 修改父组件绑定数据
+        this.$emit('input', imageList.images[selected].url)
       }
     }
   }
